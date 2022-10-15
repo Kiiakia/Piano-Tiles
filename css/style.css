@@ -1,0 +1,93 @@
+/* 通用字体 */
+* {
+    font-family: "微软雅黑";
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heading {
+    width: 450px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* 按钮 */
+.btns{
+    font-size: 18px;
+    display: inline-block;
+    height: 27px;
+    margin-right: 5px;
+    padding:2px 5px;
+    line-height: 27px;
+    background-color: darkturquoise;
+    color: white;
+    border:1px solid #eee;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.heading span:hover {
+    box-shadow: 0 0 7px 4px #0cc;
+}
+
+/* 大容器 */
+/* .container {
+    width:500px;
+    margin:50px 0px;
+} */
+
+.main {
+    width: 450px;
+    height: 540px;
+    border: 1px solid darkturquoise;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.row {
+    width: 100%;
+    height: 130px;
+    /* overflow: hidden; */
+    position: absolute;
+}
+ 
+#row01 {
+    top: -120px;
+}
+#row02 {
+    top: 10px;
+}
+#row03 {
+    top: 140px;
+}
+#row04 {
+    top: 270px;
+}
+#row05 {
+    top: 400px;
+}
+ 
+.grid-default {
+    width: 100px;
+    height: 100%;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    margin: 5px;
+    float: left;
+}
+ 
+.row div:hover {
+    box-shadow: 0 0 7px 2px #0cc;
+}
+ 
+#row-flag {
+    width: 100%;
+    height: 20px;
+    background:#0cc;
+    top: 540px;
+    left: 0;
+}
