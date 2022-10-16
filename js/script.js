@@ -1,5 +1,5 @@
 // 全局变量
-var main,allRow,grade,stopFlag,speed,maxgrade,maxspeed = false;
+var main,allRow,grade,stopFlag,speed,maxgrade,maxspeed,kuang = false;
 
 /* 文档加载完毕后 */
 window.onload = function(){
@@ -27,6 +27,9 @@ window.onload = function(){
     document.onkeyup = function(event) {
         keyPlay(event);
     };
+
+    // 动画效果
+    kuang = document.getElementById('kuang');
 };
 
 /* 得到每一行黑白格 */
@@ -59,7 +62,7 @@ function initAllRowInfo(){
         //黑格全部变为白格
         var row = allRow[i].getElementsByTagName('div');
         for(var j = 0; j < row.length; j++) {
-            row[j].style.background = '#fff';
+            row[j].style.background = 'rgba(0,0,0,0.2)';
             row[j].rowPos = i; //表示在allRow的哪一位置
             row[j].colPos = j; //表示在该行中的哪个位置
         }
@@ -72,34 +75,30 @@ function startGame() {
     stopFlag = false;
     main.style.borderTop = 'none';
     main.style.borderBottom = 'none';
-    velocity = 0;
+    velocity = 1;
     initialGame();
 }
 
 
 /* 初始化游戏，包括黑白格 */
 function initialGame(){
-    //移动黑白格
-    rowMove(15);
+    kuang.classList.add('kuang'); // 添加动画效果
+    rowMove(15);     //移动黑白格
 }
 
 
-var timer;
+var timer,timer1;
 //表示位移速度（定时器每触发黑白格移动的像素）
-var velocity = 0 ; 
+var velocity = 1.0 ; 
 //tSpeed表示时间速度（定时器隔多久触发）
 function rowMove(tSpeed){
     clearInterval(timer);
+    clearInterval(timer1);
     //让每一行黑白格进行定时移动
     //用于延迟黑格的加入 调用函数很快 判断次数减少
     var n = 1;
     //准备接触底部的没有黑格
     var hasBlack = false; 
-    if(velocity<=10){
-        velocity = Math.round(velocity+1);
-        speed.innerHTML = velocity.toFixed(0);
-    }
-
     timer = setInterval(function(){
         //标识该行是否已从上往下移出了容器，如果是，则对allRow中的顺序进行调整
         var flag = false;
@@ -117,7 +116,7 @@ function rowMove(tSpeed){
                 //延迟时间已到并且该行木有黑格 将一行白格中的一个变为黑格
                 if(n>50 && !obj.hasBlackGrid) {
                     for(var j = 0, l = obj.getElementsByTagName('div') ; j < l.length;j++){
-                        l[j].style.backgroundColor = '#fff';
+                        l[j].style.backgroundColor = 'rgba(0,0,0,0.2)';
                     }
                     //随机一行中第几个白格变成黑格
                     // console.log('1. k的值为'+k);
@@ -125,8 +124,8 @@ function rowMove(tSpeed){
                     // console.log('1. obj2的值为'+obj2.blackGridPos);
                     // console.log('1. obj的值为'+obj.blackGridPos);
                     k = Math.floor(Math.random()*4);
-                    console.log('random k的值为'+k);
-                    while(k == obj2.preBlackGridPos){
+                    
+                    while(k == obj2.preBlackGridPos || k == obj2.blackGridPos){
                         k = Math.floor(Math.random()*4);
                         // console.log('2. k的值为'+k);
                         // console.log('2. obj2的值为'+obj2.blackGridPos);
@@ -135,12 +134,10 @@ function rowMove(tSpeed){
                     obj.hasBlackGrid = true;
                     obj.blackGridPos = k;
                     // console.log('obj的值为'+obj.blackGridPos);
-                    // console.log('下一个');
+                    console.log('下一个');
                     //游戏中有黑格了
                     hasBlack = true;
-                }
-                if(n>=80){
-                    rowMove(15);
+                    
                 }
             }
             obj.style.top = obj.offsetTop + velocity + 'px';
@@ -157,12 +154,21 @@ function rowMove(tSpeed){
             allRow.push(tempRow01); //将原来位置第一的元素加入到数组的尾部
         }
     },tSpeed);
+    if(velocity<=10){
+        timer1 = setInterval(function(){
+            velocity = velocity+0.1;
+            speed.innerHTML = velocity.toFixed(1);
+        },1000)
+    }
+
 
 }
 
 // 暂停游戏
 function pauseGame() {
     clearInterval(timer);
+    clearInterval(timer1);
+    kuang.classList.remove('kuang');
     stopFlag = true;
 }
 
@@ -170,6 +176,8 @@ function pauseGame() {
 function stopGame() {
     grade.innerHTML = '0';
     clearInterval(timer);
+    clearInterval(timer1);
+    kuang.classList.remove('kuang');
     stopFlag = true;
 
     main.style.borderTop = '1px solid darkturquoise';
@@ -241,7 +249,7 @@ function rightChange(blackRowPos, blackGridPos) {
     grade.innerHTML = (parseInt(grade.innerHTML) + 1) ;
     var grid = allRow[blackRowPos].getElementsByTagName('div')[blackGridPos];
  
-    grid.style.background = 'rgba(0,0,0,0.7)';
+    grid.style.background = 'rgba(0,0,0,0.5)';
 }
 
 // 判断游戏是否结束
@@ -265,11 +273,11 @@ function gameOver(errorGrid) {
     if(parseInt(grade.innerHTML)>parseInt(maxgrade.innerHTML)){
         maxgrade.innerHTML = parseInt(grade.innerHTML);
     }
-    if(parseInt(speed.innerHTML)>parseInt(maxspeed.innerHTML)){
-        maxspeed.innerHTML = parseInt(speed.innerHTML) ;
+    if(parseFloat(speed.innerHTML)>parseFloat(maxspeed.innerHTML)){
+        maxspeed.innerHTML = parseFloat(speed.innerHTML).toFixed(1) ;
     }
     setTimeout(function() {
-        errorGrid.style.background = '#fff';
+        errorGrid.style.background = 'rgba(0,0,0,0.2)';
         setTimeout(function() {
             errorGrid.style.background = 'red';
             alert('游戏结束，您最后的得分是：' + grade.innerHTML + '！');
