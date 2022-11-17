@@ -1,11 +1,19 @@
 // 设定一些全局变量
 var main1,allRow1,grade1,stopFlag,speed1,maxgrade,maxspeed,kuang1,kuang2,main2,allRow2,grade2,speed2= false;
 
+if(!window.localStorage.getItem('maxgrade')){
+    window.localStorage.setItem('maxgrade',0);
+}
+if(!window.localStorage.getItem('maxspeed')){
+    window.localStorage.setItem('maxspeed',1);
+}
+
 /* 文档加载完毕后 */
 window.onload = function(){
     // 黑白格容器
     main1 = document.getElementById('mainID1');
     main2 = document.getElementById('mainID2');
+
     // 每一行黑白格
     allRow1 = getAllRow1();
     allRow2 = getAllRow2();
@@ -17,7 +25,10 @@ window.onload = function(){
     speed2 = document.getElementById('speed2');
     maxgrade = document.getElementById('maxgrade');
     maxspeed = document.getElementById('maxspeed');
-
+    
+    maxgrade.innerHTML = parseInt(window.localStorage.getItem('maxgrade'));
+    maxspeed.innerHTML = parseInt(window.localStorage.getItem('maxspeed'));
+    
     //点击开始游戏
     var play1 = document.getElementById('play1');
     play1.onclick = startGame1;
@@ -497,8 +508,14 @@ function max(a,b,c){
 //游戏结束
 function gameOver1(errorGrid) {
     errorGrid.style.background = 'red';
-    maxgrade.innerHTML = max(parseInt(grade1.innerHTML),parseInt(grade2.innerHTML),parseInt(maxgrade.innerHTML));
-    maxspeed.innerHTML = max(parseInt(speed2.innerHTML),parseInt(speed1.innerHTML),parseInt(maxspeed.innerHTML));
+    maxgrade.innerHTML = max(parseInt(grade1.innerHTML),parseInt(grade2.innerHTML),parseInt(localStorage.getItem('maxgrade')));
+    maxspeed.innerHTML = max(parseInt(speed1.innerHTML),parseInt(speed2.innerHTML),parseInt(localStorage.getItem('maxspeed')));
+
+    if(parseInt(maxgrade.innerHTML) !== parseInt(localStorage.getItem('maxgrade')))
+        localStorage.setItem('maxgrade',parseInt(maxgrade.innerHTML));
+    maxspeed.innerHTML = max(parseInt(speed2.innerHTML),parseInt(speed1.innerHTML),parseInt(localStorage.getItem('maxspeed')));
+    if(parseInt(maxspeed.innerHTML) !== parseInt(localStorage.getItem('maxspeed')))
+        localStorage.setItem('maxspeed',parseInt(maxspeed.innerHTML));
     setTimeout(function() {
         errorGrid.style.background = 'red';
         alert('游戏结束，玩家1您最后的得分是：' + grade1.innerHTML + '！');
@@ -508,8 +525,15 @@ function gameOver1(errorGrid) {
 
 function gameOver2(errorGrid) {
     errorGrid.style.background = 'red';
-    maxgrade.innerHTML = max(parseInt(grade1.innerHTML),parseInt(grade2.innerHTML),parseInt(maxgrade.innerHTML));
-    maxspeed.innerHTML = max(parseInt(speed2.innerHTML),parseInt(speed1.innerHTML),parseInt(maxspeed.innerHTML));
+    maxgrade.innerHTML = max(parseInt(grade1.innerHTML),parseInt(grade2.innerHTML),parseInt(localStorage.getItem('maxgrade')));
+    maxspeed.innerHTML = max(parseInt(speed1.innerHTML),parseInt(speed2.innerHTML),parseInt(localStorage.getItem('maxspeed')));
+
+    if(parseInt(maxgrade.innerHTML) !== parseInt(localStorage.getItem('maxgrade')))
+        localStorage.setItem('maxgrade',parseInt(maxgrade.innerHTML));
+    maxspeed.innerHTML = max(parseInt(speed2.innerHTML),parseInt(speed1.innerHTML),parseInt(localStorage.getItem('maxspeed')));
+    if(parseInt(maxspeed.innerHTML) !== parseInt(localStorage.getItem('maxspeed')))
+        localStorage.setItem('maxspeed',parseInt(maxspeed.innerHTML));
+        
     setTimeout(function() {
         errorGrid.style.background = 'red';
         alert('游戏结束，玩家2您最后的得分是：' + grade2.innerHTML + '！');
