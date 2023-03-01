@@ -28,4 +28,5 @@
 
 
 
- 
+ 开源安全社区检测报告：
+ [![Security Status](https://s.murphysec.com/badge/Kiiakia/Piano-Tiles.svg)](https://www.murphysec.com/p/Kiiakia/Piano-Tiles)
